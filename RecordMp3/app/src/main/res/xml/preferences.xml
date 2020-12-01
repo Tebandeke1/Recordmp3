@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="@string/pref_high_quality_key"
+        android:title="@string/pref_high_quality_title"
+        android:summary="@string/pref_high_quality_desc"/>
+
+    <PreferenceCategory android:title="@string/color_changer"/>
+        <ListPreference
+            android:title="@string/color_list_pref"
+            android:key="@string/list_colors"
+            android:summary="@string/color_message"
+            android:entries="@array/colors"
+            android:entryValues="@array/colors"
+            android:defaultValue="@string/default_color"/>
+
+    <PreferenceCategory
+        android:title="@string/prefe_about_header"/>
+        <Preference
+            android:key="@string/pref_about_key"
+            android:title="@string/pref_about_title"
+            android:summary="@string/pref_about_desc"/>
+
+</PreferenceScreen>
