@@ -1,9 +1,12 @@
 package com.tabutech.recordmp4.fragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
@@ -93,6 +96,7 @@ public class RecordFragment extends Fragment {
             }
         });
 
+
         mRecordingStatus = recordView.findViewById(R.id.recording_status);
 
         mPauseButton = recordView.findViewById(R.id.btn_pause);
@@ -112,21 +116,17 @@ public class RecordFragment extends Fragment {
 
         if (isPaused){
             mPauseButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_media_play,0,0,0);
-
-            mPauseButton.setVisibility(View.INVISIBLE);
+            mPauseButton.setText(R.string.resume_recording_button);
+           // mPauseButton.setVisibility(View.INVISIBLE);
             mRecordingStatus.setText(getActivity().getString(R.string.resume_recording_button).toUpperCase());
-
             timeWhenPaused = mChronometer.getBase() - SystemClock.elapsedRealtime();
-
-            mChronometer.start();
+            mChronometer.stop();
         }else {
             mPauseButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_media_pause,0,0,0);
-
             mRecordingStatus.setText(getString(R.string.pause_recording_button).toUpperCase());
-
             mChronometer.setBase(SystemClock.elapsedRealtime() + timeWhenPaused);
-
-            mChronometer.stop();
+            mPauseButton.setText(R.string.pause_recording_button);
+            mChronometer.start();
         }
 
     }
@@ -169,8 +169,8 @@ public class RecordFragment extends Fragment {
             });
 
             //start service here
-            getActivity().startService(intent);
 
+            getActivity().startService(intent);
             //keep screen on while recording
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -186,6 +186,7 @@ public class RecordFragment extends Fragment {
             mRecordingStatus.setText(getActivity().getString(R.string.record_status));
             //start service
             getActivity().stopService(intent);
+            mPauseButton.setVisibility(View.INVISIBLE);
 
             //allow screen to go of while recording has stopped
 

@@ -237,7 +237,7 @@ public class FileViewAdapter extends RecyclerView.Adapter<FileViewAdapter.ViewHo
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(getItem(position).getmFilePath())));
-        shareIntent.setType("audio/mp4");
+        shareIntent.setType("audio/mp3");
         mContext.startActivity(Intent.createChooser(shareIntent,mContext.getResources().getString(R.string.dialog_title_share)));
     }
     
@@ -263,6 +263,7 @@ public class FileViewAdapter extends RecyclerView.Adapter<FileViewAdapter.ViewHo
 
     @Override
     public void OnDataBaseEntryRenamed() {
+
 
     }
 

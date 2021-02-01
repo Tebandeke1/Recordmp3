@@ -64,8 +64,10 @@ public class FileViewerFragment extends Fragment {
         LinearLayoutManager llmanager = new LinearLayoutManager(getActivity());
         llmanager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        //display from newest to oldest because database
-        //stores them from oldest to newest
+        /*
+        display from newest to oldest because database
+        stores them from oldest to newest
+        */
 
         llmanager.setReverseLayout(true);
         llmanager.setStackFromEnd(true);
@@ -82,18 +84,16 @@ public class FileViewerFragment extends Fragment {
         return v;
     }
 
-    FileObserver observer = new FileObserver(android.os.Environment.getExternalStorageDirectory().toString()+"/Record MP3/") {
+    FileObserver observer = new FileObserver(android.os.Environment.getExternalStorageDirectory().toString()+"/RecordMP3/") {
         //set up file observer to watch this directory on sd card
         @Override
         public void onEvent(int event, @Nullable String path) {
             if (event == FileObserver.DELETE){
                 //user deletes file out of the app
-
-                String file = android.os.Environment.getExternalStorageDirectory().toString()+"/Record MP3"+path+"]";
+                String file = android.os.Environment.getExternalStorageDirectory().toString()+"/RecordMP3"+path+"]";
 
                 Log.e(LOG_TAG,"File deleted "+
-                        android.os.Environment.getExternalStorageDirectory().toString()+"/Record Mp3"+path+"");
-
+                        android.os.Environment.getExternalStorageDirectory().toString()+"/RecordMp3"+path+"");
                 //remove file out of the database and recycle view
                 //TODO Missing some thing here to delete the file
                 viewAdapter.removeFromOutOfApp(file);

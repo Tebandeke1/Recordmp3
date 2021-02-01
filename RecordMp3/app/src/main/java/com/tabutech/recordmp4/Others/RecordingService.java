@@ -1,11 +1,15 @@
 package com.tabutech.recordmp4.Others;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.midi.MidiDeviceInfo;
 import android.os.Environment;
@@ -14,6 +18,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.tabutech.recordmp4.DatabaseListener.OnDatabaseChangedListener;
@@ -66,7 +71,12 @@ public class RecordingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        startRecording();
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+
+        }else {
+            startRecording();
+        }
+       // startRecording();
         return START_STICKY;
     }
 
@@ -83,6 +93,7 @@ public class RecordingService extends Service {
 
         setFileNameAndPath();
         mediaRecorder = new MediaRecorder();
+       // mediaRecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setOutputFile(mFileName);
@@ -114,7 +125,7 @@ public class RecordingService extends Service {
             mFileName = getString(R.string.default_file_name)
                     + "_" + (mDatabase.getCount() + count) + ".mp4";
             mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            mFilePath += "/RecorderMP4/" + mFileName;
+            mFilePath += "/RecordMP3/" + mFileName;
 
             f = new File(mFilePath);
 
@@ -123,11 +134,15 @@ public class RecordingService extends Service {
 
 
     public void stopRecording(){
+        try {
+            mediaRecorder.stop();
+            mElapsedMillis = (System.currentTimeMillis() - mStartingTimeMillis);
+            mediaRecorder.release();
+            Toast.makeText(this, getString(R.string.toast_recording_finish) + " " + mFilePath, Toast.LENGTH_LONG).show();
 
-        mediaRecorder.stop();
-        mElapsedMillis = (System.currentTimeMillis() - mStartingTimeMillis);
-        mediaRecorder.release();
-        Toast.makeText(this, getString(R.string.toast_recording_finish) + " " + mFilePath, Toast.LENGTH_LONG).show();
+        }catch (IllegalStateException e){
+            e.printStackTrace();
+        }
 
         //remove notification
         if (mIncrementTimerTask != null) {
@@ -174,7 +189,8 @@ public class RecordingService extends Service {
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentIntent(pendingIntent);
         return builder.build();
