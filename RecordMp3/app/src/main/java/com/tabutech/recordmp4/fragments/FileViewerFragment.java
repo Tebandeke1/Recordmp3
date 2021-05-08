@@ -84,13 +84,13 @@ public class FileViewerFragment extends Fragment {
         return v;
     }
 
-    FileObserver observer = new FileObserver(android.os.Environment.getExternalStorageDirectory().toString()+"/RecordMP3/") {
+    FileObserver observer = new FileObserver(android.os.Environment.getExternalStorageDirectory().toString()+"/RecordMp3/") {
         //set up file observer to watch this directory on sd card
         @Override
         public void onEvent(int event, @Nullable String path) {
             if (event == FileObserver.DELETE){
                 //user deletes file out of the app
-                String file = android.os.Environment.getExternalStorageDirectory().toString()+"/RecordMP3"+path+"]";
+                String file = android.os.Environment.getExternalStorageDirectory().toString()+"/RecordMp3"+path+"]";
 
                 Log.e(LOG_TAG,"File deleted "+
                         android.os.Environment.getExternalStorageDirectory().toString()+"/RecordMp3"+path+"");

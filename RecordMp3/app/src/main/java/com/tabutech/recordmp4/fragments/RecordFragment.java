@@ -157,7 +157,7 @@ public class RecordFragment extends Fragment {
                 @Override
                 public void onChronometerTick(Chronometer chronometer) {
                     if (mRecordingPrompt == 0){
-                        mRecordingStatus.setText(getActivity().getString(R.string.recording_status_pro)+"'");
+                        mRecordingStatus.setText(getActivity().getString(R.string.recording_status_pro)+".");
                     }else if (mRecordingPrompt == 1){
                         mRecordingStatus.setText(getActivity().getString(R.string.record_in_progress)+"..");
                     }else if (mRecordingPrompt == 2){
@@ -193,6 +193,7 @@ public class RecordFragment extends Fragment {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
+            Toast.makeText(getActivity(), "Done recording but on condition..", Toast.LENGTH_SHORT).show();
         }
 
 

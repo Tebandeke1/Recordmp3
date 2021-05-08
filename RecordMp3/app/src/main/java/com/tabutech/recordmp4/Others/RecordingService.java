@@ -123,9 +123,9 @@ public class RecordingService extends Service {
             count++;
 
             mFileName = getString(R.string.default_file_name)
-                    + "_" + (mDatabase.getCount() + count) + ".mp4";
+                    + "_" + (mDatabase.getCount() + count) + ".mp3";
             mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            mFilePath += "/RecordMP3/" + mFileName;
+            mFilePath += "/RecordMp3/" + mFileName;
 
             f = new File(mFilePath);
 
@@ -186,6 +186,7 @@ public class RecordingService extends Service {
                 .setContentTitle(getString(R.string.notification_recording))
                 .setContentText(mTimerFormat.format(mElapsedSeconds * 1000))
                 .setOngoing(true);
+
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
